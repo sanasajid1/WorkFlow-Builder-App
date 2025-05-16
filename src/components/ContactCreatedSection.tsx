@@ -1,3 +1,5 @@
+import { useDispatch, useSelector } from "react-redux";
+import { setTrigger } from "../redux/features/workFlow/workFlowSlice";
 import {
   Button_Texts,
   General_Texts,
@@ -9,6 +11,7 @@ import TextInput from "./common/TextInput";
 import PencilSquareIcon from "./customIcons/PencilSquareIcon";
 
 import React, { useState } from "react";
+import type { RootState } from "../redux/store";
 
 type ContactCreatedSectionProps = {
   setSelectedTrigger?: (trigger: string | null) => void;
@@ -17,6 +20,11 @@ type ContactCreatedSectionProps = {
 export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
   setSelectedTrigger,
 }) => {
+  const dispatch = useDispatch();
+  const workflow = useSelector((state: RootState) => state.workflow.workflow);
+  const [description, setDescription] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
+
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
   const eventOptions = [
     { label: "Onboarding call", value: "onboarding" },
@@ -24,13 +32,30 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
     { label: "Strategy meeting", value: "strategy" },
     { label: "Discovery call", value: "discovery" },
   ];
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
   const statusOptions = [
     { label: "Active", value: "active" },
     { label: "Inactive", value: "inactive" },
     { label: "Lead", value: "lead" },
     { label: "Customer", value: "customer" },
   ];
+
+  const handleSave = () => {
+    const newTrigger = {
+      type: "contact_created",
+      description: description,
+      filters: {
+        events: selectedEvents,
+        contact_statuses: [selectedStatus],
+      },
+    };
+
+    dispatch(setTrigger(newTrigger));
+    console.log("Current Workflow State:", workflow);
+    console.log("New Trigger Added:", newTrigger);
+    if (setSelectedTrigger) {
+      setSelectedTrigger(null);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full justify-between">
@@ -50,7 +75,12 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
         <div className="text-sm text-textGray400 mb-4">
           {General_Texts.Set_Up_Trigger}
         </div>
-        <TextInput placeholder="Add a description" />
+        <TextInput
+          placeholder="Add a description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+
         <LineDivider className="my-4" />
         <div className="mb-2 text-xs font-medium text-textGray500">
           {General_Texts.Events}
@@ -80,7 +110,10 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
           />
         </div>
       </div>
-      <ButtonComponent className="flex justify-center w-full bg-gradient-to-r from-backGroundLeft to-backGroundRight text-white gap-4 items-center text-[14px] font-medium rounded-g8 px-2 py-[6px]">
+      <ButtonComponent
+        onClick={handleSave}
+        className="flex justify-center w-full bg-gradient-to-r from-backGroundLeft to-backGroundRight text-white gap-4 items-center text-[14px] font-medium rounded-g8 px-2 py-[6px]"
+      >
         {Button_Texts.Save}
       </ButtonComponent>
     </div>

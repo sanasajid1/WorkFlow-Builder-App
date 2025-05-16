@@ -1,37 +1,83 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-
-interface NodeData {
-  id: string;
-  type: string;
-  position: { x: number; y: number };
-  data: any;
-}
-
-interface WorkflowState {
-  nodes: NodeData[];
-}
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type {
+  WorkflowState,
+  Trigger,
+  Action,
+  TriggerFilters,
+} from "../../types/workflowModel";
 
 const initialState: WorkflowState = {
-  nodes: [],
+  workflow: {
+    name: "",
+    status: "",
+    trigger: {
+      type: "",
+      description: "",
+      filters: {
+        events: [],
+        contact_statuses: [],
+      },
+    },
+    actions: [],
+  },
+  loading: false,
+  error: null,
 };
 
 const workflowSlice = createSlice({
   name: "workflow",
   initialState,
   reducers: {
-    addNode: (state, action: PayloadAction<NodeData>) => {
-      state.nodes.push(action.payload);
+    setWorkflowName: (state, action: PayloadAction<string>) => {
+      state.workflow.name = action.payload;
     },
-    updateNode: (state, action: PayloadAction<NodeData>) => {
-      const index = state.nodes.findIndex((n) => n.id === action.payload.id);
-      if (index !== -1) state.nodes[index] = action.payload;
+    setWorkflowStatus: (state, action: PayloadAction<string>) => {
+      state.workflow.status = action.payload;
     },
-    deleteNode: (state, action: PayloadAction<string>) => {
-      state.nodes = state.nodes.filter((n) => n.id !== action.payload);
+    setTrigger: (state, action: PayloadAction<Trigger>) => {
+      state.workflow.trigger = action.payload;
+    },
+    updateTriggerFilters: (state, action: PayloadAction<TriggerFilters>) => {
+      state.workflow.trigger.filters = action.payload;
+    },
+    addAction: (state, action: PayloadAction<Action>) => {
+      state.workflow.actions.push(action.payload);
+    },
+    updateAction: (
+      state,
+      action: PayloadAction<{ index: number; action: Action }>
+    ) => {
+      const { index, action: updatedAction } = action.payload;
+      state.workflow.actions[index] = updatedAction;
+    },
+    removeAction: (state, action: PayloadAction<number>) => {
+      state.workflow.actions.splice(action.payload, 1);
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
+    resetWorkflow: (state) => {
+      state.workflow = initialState.workflow;
+      state.error = null;
     },
   },
 });
 
-export const { addNode, updateNode, deleteNode } = workflowSlice.actions;
+export const {
+  setWorkflowName,
+  setWorkflowStatus,
+  setTrigger,
+  updateTriggerFilters,
+  addAction,
+  updateAction,
+  removeAction,
+  setLoading,
+  setError,
+  resetWorkflow,
+} = workflowSlice.actions;
+
 export default workflowSlice.reducer;

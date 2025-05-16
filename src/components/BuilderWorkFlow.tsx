@@ -73,7 +73,6 @@ export const BuilderWorkFlowComponent: React.FC<BuilderProps> = ({
       <ReactFlow
         nodes={nodes}
         nodeTypes={nodeTypes}
-        className="bg-backgroundBlue600"
         zoomOnScroll={false}
         zoomOnPinch={false}
         zoomOnDoubleClick={false}

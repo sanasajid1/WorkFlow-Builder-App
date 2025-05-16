@@ -1,0 +1,41 @@
+{
+  "workflow": {
+    "name": "",
+    "nodes": [
+      {
+        "name": "",
+        "type": "",
+        "params": {
+          "filters": [
+            {
+              "field": "",
+              "operator": "",
+              "value": ""
+            }
+          ]
+        }
+      },
+      {
+        "name": "",
+        "type": "",
+        "params": {
+          "workflow_name": "",
+          "target": "",
+          "filters": [
+            {
+              "field": "",
+              "operator": "",
+              "value": ""
+            },
+            {
+              "field": "",
+              "operator": "",
+              "value": ""
+            }
+          ],
+          "destination": ""
+        }
+      }
+    ]
+  }
+}

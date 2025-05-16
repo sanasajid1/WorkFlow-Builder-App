@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Button } from "@headlessui/react";
 
 type ButtonProps = {
-  onClick?: () => void;
+  onClick?: (e: any) => void;
   icon?: ReactNode;
   children?: ReactNode;
   className?: string;

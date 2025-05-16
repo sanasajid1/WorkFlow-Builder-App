@@ -6,9 +6,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        borderGray50: COLORS.BORDER_GRAY_50,
         borderGray100: COLORS.BORDER_GRAY_100,
         borderGray200: COLORS.BORDER_GRAY_200,
         borderGray300: COLORS.BORDER_GRAY_300,
+        textGray400: COLORS.TEXT_GRAY_400,
         textGray500: COLORS.TEXT_GRAY_500,
         textGray900: COLORS.TEXT_GRAY_900,
         backgroundBlue600: COLORS.BACKGROUND_BLUE_600,

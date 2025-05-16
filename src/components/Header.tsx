@@ -1,12 +1,13 @@
 // components/Header.tsx
 import { useState } from "react";
-import { ArrowLeftIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { PencilIcon } from "@heroicons/react/24/outline";
 import { Switch } from "@headlessui/react";
-import { ButtonComponent } from "./Button";
+import { ButtonComponent } from "./common/Button";
 import {
   Button_Texts,
   WorkFlow_Name,
 } from "../services/constants/StringConstants";
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 
 export const Header: React.FC = () => {
   const [workflowName, setWorkflowName] = useState(WorkFlow_Name);
@@ -18,8 +19,8 @@ export const Header: React.FC = () => {
       {/* Left Back Section */}
       <div className="flex items-center">
         <ButtonComponent
-          icon={<ArrowLeftIcon className="w-4 h-4" />}
-          className="flex gap-4 items-center text-sm font-medium text-textGray900 rounded-g8 border-[1px] border-borderGray200 px-2 py-[6px]"
+          icon={<ChevronLeftIcon className="w-4 h-4 text-textGray500" />}
+          className="flex gap-1 items-center text-sm font-medium text-textGray900 rounded-g8 border-[1px] border-borderGray200 px-2 py-[6px]"
         >
           {Button_Texts.Back}
         </ButtonComponent>
@@ -33,14 +34,14 @@ export const Header: React.FC = () => {
             onChange={(e) => setWorkflowName(e.target.value)}
             onBlur={() => setIsEditing(false)}
             autoFocus
-            className="focus:outline-none font-inter text-[16px] leading-[150%] text-base font-medium text-center"
+            className="focus:outline-none text-[16px] leading-[150%] text-base font-medium text-center"
           />
         ) : (
           <div
             className="cursor-pointer flex items-center gap-1"
             onClick={() => setIsEditing(true)}
           >
-            <span className="text-base font-inter text-[16px] leading-[150%] font-medium">
+            <span className="text-base text-[16px] leading-[150%] font-medium">
               {workflowName}
             </span>
             <PencilIcon className="w-4 h-4 text-textGray500" />
@@ -50,7 +51,7 @@ export const Header: React.FC = () => {
 
       {/* Right Section */}
       <div className="flex items-center gap-4">
-        <ButtonComponent className="flex font-inter gap-4 items-center text-[13px] font-medium text-textGray900 rounded-md border-[1px] border-borderGray200 px-[6px] py-[2px]">
+        <ButtonComponent className="flex gap-4 items-center text-[13px] font-medium text-textGray900 rounded-md border-[1px] border-borderGray200 bg-borderGray100 px-[6px] py-[2px]">
           {Button_Texts.Draft}
         </ButtonComponent>
         <div className="flex items-center gap-2">
@@ -68,7 +69,7 @@ export const Header: React.FC = () => {
             />
           </Switch>
         </div>
-        <ButtonComponent className="flex bg-gradient-to-r from-backGroundLeft to-backGroundRight text-white font-inter gap-4 items-center text-[14px] font-medium rounded-g8 px-2 py-[6px]">
+        <ButtonComponent className="flex bg-gradient-to-r from-backGroundLeft to-backGroundRight text-white gap-4 items-center text-[14px] font-medium rounded-g8 px-2 py-[6px]">
           {Button_Texts.Save}
         </ButtonComponent>
       </div>

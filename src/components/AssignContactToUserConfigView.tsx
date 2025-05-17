@@ -10,6 +10,7 @@ import workflowData from "../data/workflow.json";
 import {
   assignContactConditionOptions,
   assignContactUserOptions,
+  Button_Texts,
 } from "../services/constants/StringConstants";
 
 interface AssignContactToUserConfigViewProps {
@@ -242,20 +243,18 @@ const AssignContactToUserConfigView: React.FC<
       <div className="flex justify-end gap-2 py-4 mt-auto">
         <ButtonComponent
           onClick={onClose}
-          className="flex items-center gap-4 px-2 py-[6px] text-[14px] font-medium rounded-g8 border border-borderGray300  bg-white text-textGray500"
+          className="flex items-center gap-4 px-2 py-[6px] text-[14px] font-medium rounded-g8 border border-borderGray300 bg-white text-textGray900"
         >
-          Cancel
+          {Button_Texts.Cancel}
         </ButtonComponent>
         <ButtonComponent
           onClick={handleSave}
           disabled={isSaveDisabled}
           className={`flex items-center gap-4 px-2 py-[6px] text-[14px] font-medium rounded-g8 text-white ${
-            isSaveDisabled
-              ? "bg-gradient-to-r from-backGroundLeft via-backGroundMiddle to-backGroundRight cursor-not-allowed"
-              : "bg-backgroundBlue600"
+            isSaveDisabled ? "disabled-button-class" : "active-button-class"
           }`}
         >
-          Save
+          {Button_Texts.Save}
         </ButtonComponent>
       </div>
     </div>

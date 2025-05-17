@@ -15,6 +15,7 @@ export default {
         textBlue400: COLORS.TEXT_BLUE_400,
         textGray400: COLORS.TEXT_GRAY_400,
         textGray500: COLORS.TEXT_GRAY_500,
+        textGray700: COLORS.TEXT_GRAY_700,
         textGray800: COLORS.TEXT_GRAY_800,
         textGray900: COLORS.TEXT_GRAY_900,
         textGreen800: COLORS.TEXT_GREEN_800,

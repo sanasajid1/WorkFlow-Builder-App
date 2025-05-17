@@ -1,6 +1,8 @@
 import { Input } from "@headlessui/react";
 import SearchBarIcon from "../customIcons/SearchBarIcon";
 
+//custom Search Bar with custom icon used in the apps
+
 interface SearchBarProps {
   placeholder?: string;
   name?: string;

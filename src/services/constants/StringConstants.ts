@@ -93,15 +93,15 @@ export const actionTabContent = [
     heading: "APPOINTMENT SETTING",
     items: [
       { label: "Assign contact to user", view: "assignContact" },
-      { label: "Remove assigned user", view: "removeAssignedUser" },
+      { label: "Remove assigned user" },
     ],
     utilitiesHeading: "UTILITIES",
     utilities: [
-      { label: "If/Else condition", view: "ifElse" },
+      { label: "If/Else condition" },
       { label: "Wait", view: "wait" },
-      { label: "Go to", view: "goTo" },
-      { label: "Webhook", view: "webhook" },
-      { label: "Math operation", view: "mathOperation" },
+      { label: "Go to" },
+      { label: "Webhook" },
+      { label: "Math operation" },
     ],
   },
   // Contact tab

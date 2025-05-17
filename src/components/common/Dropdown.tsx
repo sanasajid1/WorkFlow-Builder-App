@@ -5,11 +5,7 @@ import TextInput from "./TextInput";
 import { ButtonComponent } from "./Button";
 import { General_Texts } from "../../services/constants/StringConstants";
 
-/* With the current implementation using Headless UI's Menu, 
- you can select multiple options by clicking each one, but the menu 
- does not stay open after each selection, it closes after every click. 
- This is because the Menu component is designed for single-action dropdowns, 
- not persistent multi-select lists. */
+/* custom dropdown used in the entire app using Headless UI's component */
 
 export interface DropdownOption {
   label: ReactNode;
@@ -137,7 +133,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 if (multiple) {
                   handleMultiSelect(option);
                 } else {
-                  onChange(option.value);
+                  // For single selection, if the clicked option is already selected,
+                  // uncheck it by setting value to empty string
+                  const newValue = value === option.value ? "" : option.value;
+                  onChange(newValue);
                   setIsOpen(false);
                 }
               }}
@@ -168,7 +167,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   } relative inline-flex h-4 w-4 items-center justify-center rounded-md transition-colors focus:outline-none`}
                 >
                   <span className="sr-only">
-                    Select{" "}
+                    Select
                     {typeof option.label === "string" ? option.label : "option"}
                   </span>
 

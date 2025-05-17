@@ -24,6 +24,8 @@ import { Sidebar } from "./Sidebar";
 import { BuilderWorkFlowComponent } from "./BuilderWorkFlow";
 import ExecutionLogsComponent from "./ExecutionLogsFlow";
 
+//navbar used for switching between builder and execution log tabs
+
 const tabs = [
   {
     name: Tab_Panel_Texts.Builder,

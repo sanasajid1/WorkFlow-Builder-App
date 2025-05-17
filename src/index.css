@@ -18,6 +18,10 @@
   background: linear-gradient(#1044ce, #001d6b);
 }
 
+.filter-options {
+  @apply text-textGray900 text-base font-medium;
+}
+
 body {
   margin: 0;
   padding: 0;

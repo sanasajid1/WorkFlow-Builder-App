@@ -7,6 +7,8 @@ import TriggerSelectionView from "./TriggerSelectionView";
 import WaitActionConfigView from "./WaitActionConfigView";
 import AssignContactToUserConfigView from "./AssignContactToUserConfigView";
 
+//this is sidebar component used for triggers and actions
+
 interface SidebarProps {
   isOpen: boolean;
   toggleSideBar: () => void;

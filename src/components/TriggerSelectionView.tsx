@@ -52,11 +52,11 @@ const TriggerSelectionView: React.FC<TriggerSelectionViewProps> = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [searchValue, setSearchValue] = useState("");
 
-  console.log(searchValue);
-
   const handleSearch = (value: string) => {
     setSearchValue(value);
   };
+
+  console.log(searchValue);
 
   return (
     <>

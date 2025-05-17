@@ -13,6 +13,8 @@ import type { RootState } from "../redux/store";
 import type { Workflow } from "../redux/types/workflowModel";
 import LineDivider from "./common/LineDivider";
 
+//builder flow component using React Flow to map trigger an action nodes
+
 interface NodeData {
   label: string;
   onClick: () => void;
@@ -23,7 +25,6 @@ interface NodeData {
 const TriggerNode = ({ data }: { data: NodeData }) => {
   const workflowData = data.workflow.trigger;
   const showLineDivider =
-    workflowData.description ||
     workflowData.filters.events?.length > 0 ||
     workflowData.filters.contact_statuses !== "";
 

@@ -58,7 +58,9 @@ export const TextInput: React.FC<TextInputProps> = ({
   }
 
   return (
-    <div className="flex items-center px-0 py-0 border border-borderGray200 rounded bg-borderGray50 text-sm focus-within:outline-none">
+    <div
+      className={`flex items-center px-0 py-0 border border-borderGray200 rounded bg-borderGray50 text-sm focus-within:outline-none ${className}`}
+    >
       <Input
         // type={type}
         value={value}

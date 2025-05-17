@@ -24,7 +24,7 @@ export const ActionSelectionView: React.FC<ActionSelectionViewProps> = ({
       <div>
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h2 className="text-lg font-semibold">Select action</h2>
+            <span className="text-lg font-semibold">Select action</span>
             <div className="text-xs text-gray-500 mt-1">
               Define what you want to do
             </div>
@@ -79,7 +79,9 @@ export const ActionSelectionView: React.FC<ActionSelectionViewProps> = ({
                     <li
                       key={i}
                       className="flex items-center gap-2 bg-borderGray50 border border-borderGray200 rounded px-3 py-2 text-sm cursor-pointer hover:bg-borderGray100"
-                      onClick={() => onActionSelect(item.view)}
+                      onClick={() =>
+                        item.view ? onActionSelect(item.view) : ""
+                      }
                     >
                       {item.label}
                     </li>
@@ -96,7 +98,9 @@ export const ActionSelectionView: React.FC<ActionSelectionViewProps> = ({
                     <li
                       key={i}
                       className="flex items-center gap-2 bg-borderGray50 border border-borderGray200 rounded px-3 py-2 text-sm cursor-pointer hover:bg-borderGray100"
-                      onClick={() => onActionSelect(item.view)}
+                      onClick={() =>
+                        item.view ? onActionSelect(item.view) : ""
+                      }
                     >
                       {item.label}
                     </li>

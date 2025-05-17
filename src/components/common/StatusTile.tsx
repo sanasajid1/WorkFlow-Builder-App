@@ -1,5 +1,8 @@
 import React from "react";
 
+/*customisable Status Tile used in execution logs table to display status
+of each execution */
+
 interface StatusTileProps {
   status: string;
   className?: string;

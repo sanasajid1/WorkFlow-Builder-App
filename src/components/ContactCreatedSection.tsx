@@ -32,7 +32,6 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
   const dispatch = useDispatch();
   const workflow = useSelector((state: RootState) => state.workflow.workflow);
 
-  // Local state for form values
   const [description, setDescription] = useState(
     workflow.trigger.description || ""
   );
@@ -77,8 +76,24 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
 
   // Handle status changes - update only when dropdown closes
   const handleStatusChange = (val: string | string[]) => {
-    setSelectedStatus(val as string);
-    if (!isStatusOpen) {
+    // If val is empty string or undefined, it means the option was unchecked
+    const newStatus = val === "" || val === undefined ? "" : (val as string);
+    setSelectedStatus(newStatus);
+
+    // Update Redux immediately when unchecking
+    if (newStatus === "") {
+      dispatch(
+        setTrigger({
+          type: "contact_created",
+          description: description,
+          filters: {
+            events: selectedEvents,
+            contact_statuses: "",
+          },
+        })
+      );
+    } else if (!isStatusOpen) {
+      // For selecting a new value, update when dropdown closes
       updateTrigger();
     }
   };

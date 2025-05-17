@@ -14,13 +14,22 @@ import { COLORS } from "../services/constants/ColorConstants";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import StatusTile from "./common/StatusTile";
 import HistoryIcon from "./customIcons/HistoryIcon";
+import { DateRangePicker } from "./common/DateRangePicker";
+import { parse, isWithinInterval } from "date-fns";
 
 const ExecutionLogsComponent: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
-  const [dateRange] = useState("2024-03-23 - 2025-03-23");
+  const [dateRange, setDateRange] = useState("Select Date Range");
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
+
+  const handleResetFilters = () => {
+    setSelectedStatuses([]);
+    setSelectedContacts([]);
+    setDateRange("Select Date Range");
+    setCurrentPage(1);
+  };
 
   const contactOptions: DropdownOption[] = useMemo(() => {
     return workflowData.workflow.users.map((user) => ({
@@ -29,23 +38,58 @@ const ExecutionLogsComponent: React.FC = () => {
     }));
   }, []);
 
+  const parseExecutionDate = (dateStr: string) => {
+    // Input format: "May 21st 2025, 6:27:05"
+    const [datePart] = dateStr.split(",");
+    const [month, day, year] = datePart.split(" ");
+
+    // Remove ordinal indicators (st, nd, rd, th)
+    const cleanDay = day.replace(/(st|nd|rd|th)/, "");
+
+    // Reconstruct date string in a format that Date can parse
+    const parsableDate = `${month} ${cleanDay} ${year}`;
+    return new Date(parsableDate);
+  };
+
   const filteredData = useMemo(() => {
     let filtered = [...workflowData.workflow.users];
 
+    // Filter by status
     if (selectedStatuses.length > 0) {
       filtered = filtered.filter((user) =>
         selectedStatuses.includes(user.status)
       );
     }
 
+    // Filter by contacts
     if (selectedContacts.length > 0) {
       filtered = filtered.filter((user) =>
         selectedContacts.includes(user.name)
       );
     }
 
+    // Filter by date range using the format yyyy-MM-dd
+    const [startDateStr, endDateStr] = dateRange.split(" - ");
+
+    if (startDateStr && endDateStr) {
+      try {
+        const startDate = parse(startDateStr.trim(), "yyyy-MM-dd", new Date());
+        const endDate = parse(endDateStr.trim(), "yyyy-MM-dd", new Date());
+
+        filtered = filtered.filter((user) => {
+          const executionDate = parseExecutionDate(user.executedOn);
+          return isWithinInterval(executionDate, {
+            start: startDate,
+            end: endDate,
+          });
+        });
+      } catch (error) {
+        console.error("Error parsing dates:", error);
+      }
+    }
+
     return filtered;
-  }, [selectedStatuses, selectedContacts]);
+  }, [selectedStatuses, selectedContacts, dateRange]);
 
   const columns = [
     {
@@ -116,11 +160,10 @@ const ExecutionLogsComponent: React.FC = () => {
 
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-4">
-          <input
-            type="text"
+          <DateRangePicker
             value={dateRange}
-            className="border rounded-lg focus:outline-none focus:ring-0 px-3 py-2 text-sm"
-            readOnly
+            onChange={setDateRange}
+            className="w-[250px] filter-options"
           />
 
           <Dropdown
@@ -132,7 +175,7 @@ const ExecutionLogsComponent: React.FC = () => {
             multiple={true}
             placeholder="Select status"
             isSearch={false}
-            className="rounded-lg"
+            className="rounded-lg filter-options"
           />
 
           <div className="w-48">
@@ -144,7 +187,7 @@ const ExecutionLogsComponent: React.FC = () => {
               }
               multiple={true}
               placeholder="Select contacts"
-              className="rounded-lg"
+              className="rounded-lg filter-options"
             />
           </div>
         </div>
@@ -156,8 +199,9 @@ const ExecutionLogsComponent: React.FC = () => {
                 stroke={COLORS.TEXT_GRAY_500}
               />
             }
+            onClick={handleResetFilters}
             className="rounded-g8 border-[1px] hover:bg-borderGray50 border-borderGray300 p-2"
-          ></ButtonComponent>
+          />
         </div>
       </div>
 

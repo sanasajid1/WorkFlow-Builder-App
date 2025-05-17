@@ -2,6 +2,8 @@
 import type { ReactNode } from "react";
 import { Button } from "@headlessui/react";
 
+/* reusable button component through out the app */
+
 type ButtonProps = {
   onClick?: (e: any) => void;
   icon?: ReactNode;

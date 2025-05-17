@@ -1,0 +1,102 @@
+{
+  "workflow": {
+    "name": "",
+    "status": "",
+    "users": [
+      {
+        "id": "1",
+        "name": "Phoenix Baker",
+        "action": "Contact Created",
+        "status": "Finished",
+        "executedOn": "Apr 21st, 6:27:05",
+        "username": "phoenix",
+        "avatar": "https://randomuser.me/api/portraits/men/32.jpg"
+      },
+      {
+        "id": "2",
+        "name": "Olivia Rhye",
+        "action": "Contact Created",
+        "status": "Error",
+        "executedOn": "Apr 21st, 6:27:05",
+        "username": "olivia",
+        "avatar": "https://randomuser.me/api/portraits/women/44.jpg"
+      },
+      {
+        "id": "3",
+        "name": "Lana Steiner",
+        "action": "Contact Created",
+        "status": "Finished",
+        "executedOn": "Apr 21st, 6:27:05",
+        "username": "lana",
+        "avatar": "https://randomuser.me/api/portraits/women/68.jpg"
+      },
+      {
+        "id": "4",
+        "name": "Demi Wilkinson",
+        "action": "Contact Created",
+        "status": "Error",
+        "executedOn": "Apr 21st, 6:27:05",
+        "username": "demi",
+        "avatar": "https://randomuser.me/api/portraits/women/65.jpg"
+      },
+      {
+        "id": "5",
+        "name": "Candice Wu",
+        "action": "Contact Created",
+        "status": "Finished",
+        "executedOn": "Apr 21st, 6:27:05",
+        "username": "candice",
+        "avatar": "https://randomuser.me/api/portraits/women/12.jpg"
+      },
+      {
+        "id": "6",
+        "name": "Natali Craig",
+        "action": "Contact Created",
+        "status": "Error",
+        "executedOn": "Apr 21st, 6:27:05",
+        "username": "natali",
+        "avatar": "https://randomuser.me/api/portraits/women/21.jpg"
+      },
+      {
+        "id": "7",
+        "name": "Drew Cano",
+        "action": "Contact Created",
+        "status": "Finished",
+        "executedOn": "Apr 21st, 6:27:05",
+        "username": "drew",
+        "avatar": "https://randomuser.me/api/portraits/men/41.jpg"
+      }
+    ],
+    "trigger": {
+      "type": "",
+      "description": "",
+      "filters": {
+        "events": [],
+        "contact_statuses": []
+      }
+    },
+    "actions": [
+      {
+        "type": "",
+        "config": {
+          "mode": "",
+          "duration": {
+            "value": 0,
+            "unit": ""
+          }
+        }
+      },
+      {
+        "type": "",
+        "config": {
+          "assign_condition": "",
+          "assign_to": {
+            "type": "",
+
+            "distribution": ""
+          }
+        }
+      }
+    ]
+  }
+}

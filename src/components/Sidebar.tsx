@@ -5,6 +5,7 @@ import { setTrigger } from "../redux/features/workFlow/workFlowSlice";
 import ActionSelectionView from "./ActionSelectionView";
 import TriggerSelectionView from "./TriggerSelectionView";
 import WaitActionConfigView from "./WaitActionConfigView";
+import AssignContactToUserConfigView from "./AssignContactToUserConfigView";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -57,6 +58,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSideBar }) => {
           )
         ) : selectedActionView === "wait" ? (
           <WaitActionConfigView onClose={() => setSelectedActionView(null)} />
+        ) : selectedActionView === "assignContact" ? (
+          <AssignContactToUserConfigView
+            onClose={() => setSelectedActionView(null)}
+          />
         ) : (
           <div className="p-8 text-center">
             Config view for: {selectedActionView} <br />{" "}

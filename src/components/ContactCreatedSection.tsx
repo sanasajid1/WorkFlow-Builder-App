@@ -133,14 +133,14 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
   return (
     <div className="flex flex-col h-full justify-between">
       <div>
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-start justify-between mb-2">
           <div className="flex items-center gap-2 text-base font-semibold">
             <UserIcon stroke={COLORS.TEXT_GRAY_500} className="w-5 h-5" />
             {General_Texts.Contact_Created}
           </div>
           <ButtonComponent
             onClick={handleClose}
-            className="text-textGray400 hover:text-backgroundBlue600 text-xl px-2"
+            className="text-textGray400 text-xl px-2"
           >
             ×
           </ButtonComponent>

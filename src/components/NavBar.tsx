@@ -22,6 +22,7 @@ import { COLORS } from "../services/constants/ColorConstants";
 import { useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { BuilderWorkFlowComponent } from "./BuilderWorkFlow";
+import ExecutionLogsComponent from "./ExecutionLogsFlow";
 
 const tabs = [
   {
@@ -132,8 +133,8 @@ export const NavBar: React.FC = () => {
             <BuilderWorkFlowComponent onClick={toggleSideBar} />
             <Sidebar isOpen={isOpen} toggleSideBar={toggleSideBar} />
           </TabPanel>
-          <TabPanel>
-            <div className="text-lg">Hello, this is Execution Log</div>
+          <TabPanel className="h-full">
+            <ExecutionLogsComponent />
           </TabPanel>
         </TabPanels>
       </TabGroup>

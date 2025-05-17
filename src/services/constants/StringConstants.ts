@@ -22,6 +22,8 @@ export const General_Texts = {
   Contact_Status: "Contact status",
   Close_Menu: "Close menu",
   Define_The_Trigger: "Define the trigger that kicks off this workflow.",
+  Execution_Logs_Description:
+    "View a history and details of all executions performed by this Workflow",
 };
 
 export const SideBar_Tabs = {

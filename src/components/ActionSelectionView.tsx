@@ -75,7 +75,7 @@ export const ActionSelectionView: React.FC<ActionSelectionViewProps> = ({
   return (
     <div className="flex flex-col h-full justify-between">
       <div>
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-start justify-between mb-2">
           <div>
             <h2 className="text-lg font-semibold">Select action</h2>
             <div className="text-xs text-gray-500 mt-1">

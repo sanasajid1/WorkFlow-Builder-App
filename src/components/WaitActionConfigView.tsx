@@ -1,18 +1,45 @@
 import React, { useState } from "react";
 import { ButtonComponent } from "./common/Button";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import TextInput from "./common/TextInput";
+import { Dropdown } from "./common/Dropdown";
+import { addAction } from "../redux/features/workFlow/workFlowSlice";
+import { useDispatch } from "react-redux";
 
 interface WaitActionConfigViewProps {
   onClose: () => void;
 }
 
-const timeUnits = ["Minutes", "Hours", "Days", "Weeks"];
+const timeUnits = [
+  { value: "Minutes", label: "Minutes" },
+  { value: "Hours", label: "Hours" },
+  { value: "Days", label: "Days" },
+];
 
 const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
   onClose,
 }) => {
+  const dispatch = useDispatch();
   const [step, setStep] = useState<"main" | "period">("main");
-  const [waitValue, setWaitValue] = useState(10);
+  const [waitValue, setWaitValue] = useState("");
   const [waitUnit, setWaitUnit] = useState("Minutes");
+
+  const handleSave = () => {
+    const waitAction = {
+      type: "wait",
+      config: {
+        mode: "duration",
+        duration: {
+          value: parseInt(waitValue) || 0,
+          unit: waitUnit,
+        },
+      },
+    };
+    dispatch(addAction(waitAction));
+    onClose();
+  };
+
+  const isSaveDisabled = !waitValue || !waitUnit;
 
   return (
     <div className="flex flex-col h-full p-0">
@@ -33,16 +60,7 @@ const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
         </div>
         <div className="flex items-center gap-2">
           <button className="text-gray-400 hover:text-gray-600">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path d="M4.93 4.93a10 10 0 1 1-1.41 1.41" />
-              <path d="M12 2v6h6" />
-            </svg>
+            <ArrowPathIcon className="w-4 h-4" />
           </button>
           <ButtonComponent
             onClick={onClose}
@@ -91,7 +109,7 @@ const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
         <div className="flex flex-col gap-3">
           {/* Back */}
           <button
-            className="flex items-center text-sm text-backgroundBlue600 mb-2 gap-1"
+            className="flex items-center text-sm mb-2 gap-1"
             onClick={() => setStep("main")}
           >
             <svg
@@ -112,38 +130,37 @@ const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
           <div className="font-medium mb-2">A set period of time</div>
           <div className="mb-2 text-sm text-gray-700">Wait for</div>
           <div className="flex items-center gap-2 mb-4">
-            <input
+            <TextInput
               type="number"
-              min={1}
-              value={waitValue}
-              onChange={(e) => setWaitValue(Number(e.target.value))}
-              className="w-16 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-100 text-sm"
+              value={waitValue.toString()}
+              onChange={(e) => setWaitValue(e.target.value)}
+              className="px-2 py-1 border border-borderGray300 rounded text-sm focus:outline-none focus:ring-none w-[20%]"
             />
-            <select
+            <Dropdown
               value={waitUnit}
-              onChange={(e) => setWaitUnit(e.target.value)}
-              className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-100"
-            >
-              {timeUnits.map((unit) => (
-                <option key={unit} value={unit}>
-                  {unit}
-                </option>
-              ))}
-            </select>
+              onChange={(value) => setWaitUnit(value as string)}
+              options={timeUnits}
+              isCheckBox={false}
+              className="w-32"
+            />
           </div>
         </div>
       )}
-      {/* Footer */}
       <div className="flex justify-end gap-2 py-4 mt-auto">
         <ButtonComponent
           onClick={onClose}
-          className="px-4 py-2 rounded border border-borderGray300 text-textGray500 bg-white"
+          className="flex items-center gap-4 px-2 py-[6px] text-[14px] font-medium rounded-g8 border border-borderGray300  bg-white text-textGray500"
         >
           Cancel
         </ButtonComponent>
         <ButtonComponent
-          onClick={() => {}}
-          className="px-4 py-2 rounded border text-white bg-backgroundBlue600"
+          onClick={handleSave}
+          disabled={isSaveDisabled}
+          className={`flex items-center gap-4 px-2 py-[6px] text-[14px] font-medium rounded-g8 text-white ${
+            isSaveDisabled
+              ? "bg-gradient-to-r from-backGroundLeft to-backGroundRight cursor-not-allowed"
+              : "bg-backgroundBlue600"
+          }`}
         >
           Save
         </ButtonComponent>

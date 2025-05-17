@@ -22,6 +22,7 @@ const initialState: WorkflowState = {
     actions: [],
   },
   loading: false,
+  isTriggerCreated: false,
   error: null,
 };
 
@@ -37,9 +38,11 @@ const workflowSlice = createSlice({
     },
     setTrigger: (state, action: PayloadAction<Trigger>) => {
       console.log("here");
-
       state.workflow.trigger = action.payload;
       console.log(state.workflow.trigger, "   ", action.payload);
+    },
+    setIsTriggerCreated: (state, action: PayloadAction<boolean>) => {
+      state.isTriggerCreated = action.payload;
     },
     updateTriggerFilters: (state, action: PayloadAction<TriggerFilters>) => {
       state.workflow.trigger.filters = action.payload;
@@ -74,6 +77,7 @@ export const {
   setWorkflowName,
   setWorkflowStatus,
   setTrigger,
+  setIsTriggerCreated,
   updateTriggerFilters,
   addAction,
   updateAction,

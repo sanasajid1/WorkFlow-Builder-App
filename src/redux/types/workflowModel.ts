@@ -68,4 +68,5 @@ export interface WorkflowState {
   workflow: Workflow;
   loading: boolean;
   error: string | null;
+  isTriggerCreated: boolean;
 }

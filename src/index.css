@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.active-button-class {
+  @apply bg-gradient-to-r from-backGroundLeftActive to-backGroundRightActive cursor-pointer;
+}
+
+.disabled-button-class {
+  @apply bg-gradient-to-r from-backGroundLeft to-backGroundRight opacity-50;
+}
+
 body {
   margin: 0;
   padding: 0;

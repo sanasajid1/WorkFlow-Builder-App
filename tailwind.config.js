@@ -18,6 +18,8 @@ export default {
         backgroundBlue600: COLORS.BACKGROUND_BLUE_600,
         backGroundLeft: COLORS.BACKGROUND_GRADIENT_LEFT,
         backGroundRight: COLORS.BACKGROUND_GRADIENT_RIGHT,
+        backGroundLeftActive: COLORS.BACKGROUND_GRADIENT_LEFT_ACTIVE,
+        backGroundRightActive: COLORS.BACKGROUND_GRADIENT_RIGHT_ACTIVE,
       },
       borderRadius: {
         g8: "8px",

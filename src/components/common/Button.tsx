@@ -7,6 +7,7 @@ type ButtonProps = {
   icon?: ReactNode;
   children?: ReactNode;
   className?: string;
+  disabled?: boolean;
 };
 
 export const ButtonComponent: React.FC<ButtonProps> = ({
@@ -14,9 +15,10 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
   icon,
   children,
   className,
+  disabled = false,
 }) => {
   return (
-    <Button onClick={onClick} className={className}>
+    <Button onClick={onClick} className={className} disabled={disabled}>
       {icon}
       {children}
     </Button>

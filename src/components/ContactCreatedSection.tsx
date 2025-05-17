@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setTrigger,
   resetWorkflow,
+  setIsTriggerCreated,
 } from "../redux/features/workFlow/workFlowSlice";
 import {
   Button_Texts,
@@ -100,7 +101,14 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
     if (onShowActionView) {
       onShowActionView();
     }
+    dispatch(setIsTriggerCreated(true));
   };
+
+  // Add isFormValid check
+  const isFormValid =
+    description.trim() !== "" &&
+    selectedEvents.length > 0 &&
+    selectedStatus !== "";
 
   // Update trigger when dropdowns close
   useEffect(() => {
@@ -177,7 +185,10 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
       </div>
       <ButtonComponent
         onClick={handleSave}
-        className="flex justify-center w-full bg-gradient-to-r from-backGroundLeft to-backGroundRight text-white gap-4 items-center text-[14px] font-medium rounded-g8 px-2 py-[6px]"
+        disabled={!isFormValid}
+        className={`flex justify-center w-full gap-4 items-center text-[14px] font-medium rounded-g8 px-2 py-[6px] text-white ${
+          isFormValid ? "active-button-class" : "disabled-button-class"
+        }`}
       >
         {Button_Texts.Save}
       </ButtonComponent>

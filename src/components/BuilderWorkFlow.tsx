@@ -21,10 +21,12 @@ interface NodeData {
 
 // Custom Node Component
 const TriggerNode = ({ data }: { data: NodeData }) => {
+  const workflowData = data.workflow.trigger;
   const showLineDivider =
-    data.workflow.trigger.description ||
-    data.workflow.trigger.filters.events ||
-    data.workflow.trigger.filters.contact_statuses;
+    workflowData.description ||
+    workflowData.filters.events?.length > 0 ||
+    workflowData.filters.contact_statuses !== "";
+
   return (
     <div
       onClick={data.onClick}
@@ -58,6 +60,28 @@ const TriggerNode = ({ data }: { data: NodeData }) => {
       </div>
 
       {showLineDivider && <LineDivider className="my-4" />}
+
+      {workflowData.filters.events?.length > 0 && (
+        <div className="flex">
+          <div className="text-xs font-medium text-textGray500 mb-2 mr-2">
+            {General_Texts.Events}:
+          </div>
+          <div className="text-xs font-medium text-textGray900">
+            {workflowData.filters.events.join(", ")}
+          </div>
+        </div>
+      )}
+
+      {workflowData.filters.contact_statuses !== "" && (
+        <div className="flex">
+          <div className="text-xs font-medium text-textGray500 mb-2 mr-2">
+            {General_Texts.Contact_Status}:
+          </div>
+          <div className="text-xs font-medium text-textGray900">
+            {workflowData.filters.contact_statuses}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

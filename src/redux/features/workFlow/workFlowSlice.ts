@@ -16,7 +16,7 @@ const initialState: WorkflowState = {
       description: "",
       filters: {
         events: [],
-        contact_statuses: [],
+        contact_statuses: "",
       },
     },
     actions: [],

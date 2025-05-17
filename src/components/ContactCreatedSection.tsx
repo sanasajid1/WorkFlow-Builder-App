@@ -12,54 +12,108 @@ import { Dropdown } from "./common/Dropdown";
 import LineDivider from "./common/LineDivider";
 import TextInput from "./common/TextInput";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import type { RootState } from "../redux/store";
 import { COLORS } from "../services/constants/ColorConstants";
 import { UserIcon } from "@heroicons/react/24/outline";
 
 type ContactCreatedSectionProps = {
   setSelectedTrigger?: (trigger: string | null) => void;
+  onShowActionView?: () => void;
 };
 
 export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
   setSelectedTrigger,
+  onShowActionView,
 }) => {
   const dispatch = useDispatch();
   const workflow = useSelector((state: RootState) => state.workflow.workflow);
-  const [description, setDescription] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
 
-  const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
+  // Local state for form values
+  const [description, setDescription] = useState(
+    workflow.trigger.description || ""
+  );
+  const [selectedStatus, setSelectedStatus] = useState<string>(
+    workflow.trigger.filters.contact_statuses || ""
+  );
+  const [selectedEvents, setSelectedEvents] = useState<string[]>(
+    workflow.trigger.filters.events || []
+  );
+
+  // Track if dropdowns are open
+  const [isEventsOpen, setIsEventsOpen] = useState(false);
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
+
   const eventOptions = [
-    { label: "Onboarding call", value: "onboarding" },
-    { label: "Demo call", value: "demo" },
-    { label: "Strategy meeting", value: "strategy" },
-    { label: "Discovery call", value: "discovery" },
-  ];
-  const statusOptions = [
-    { label: "Active", value: "active" },
-    { label: "Inactive", value: "inactive" },
-    { label: "Lead", value: "lead" },
-    { label: "Customer", value: "customer" },
+    { label: "Onboarding call", value: "Onboarding call" },
+    { label: "Demo call", value: "Demo call" },
+    { label: "Strategy meeting", value: "Strategy meeting" },
+    { label: "Discovery call", value: "Discovery call" },
   ];
 
-  const handleSave = () => {
+  const statusOptions = [
+    { label: "Potential", value: "Potential" },
+    { label: "Qualified", value: "Qualified" },
+    { label: "Disqualified", value: "Disqualified" },
+    { label: "Strategy Call Booked", value: "Strategy Call Booked" },
+    { label: "Discovery Call Booked", value: "Discovery Call Booked" },
+  ];
+
+  // Update trigger in Redux
+  const updateTrigger = useCallback(() => {
     const newTrigger = {
       type: "contact_created",
       description: description,
       filters: {
         events: selectedEvents,
-        contact_statuses: [selectedStatus],
+        contact_statuses: selectedStatus,
       },
     };
-
     dispatch(setTrigger(newTrigger));
-    console.log("Current Workflow State:", workflow);
-    console.log("New Trigger Added:", newTrigger);
-    if (setSelectedTrigger) {
-      setSelectedTrigger(null);
+  }, [description, selectedEvents, selectedStatus, dispatch]);
+
+  // Handle description changes - update immediately
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(e.target.value);
+    updateTrigger();
+  };
+
+  // Handle events changes - update only when dropdown closes
+  const handleEventsChange = (val: string | string[]) => {
+    const newEvents = Array.isArray(val) ? val : [val];
+    setSelectedEvents(newEvents);
+    if (!isEventsOpen) {
+      updateTrigger();
     }
   };
+
+  // Handle status changes - update only when dropdown closes
+  const handleStatusChange = (val: string | string[]) => {
+    setSelectedStatus(val as string);
+    if (!isStatusOpen) {
+      updateTrigger();
+    }
+  };
+
+  const handleSave = () => {
+    updateTrigger();
+    if (onShowActionView) {
+      onShowActionView();
+    }
+  };
+
+  // Update trigger when dropdowns close
+  useEffect(() => {
+    if (!isEventsOpen && selectedEvents.length > 0) {
+      updateTrigger();
+    }
+  }, [isEventsOpen, selectedEvents, updateTrigger]);
+
+  useEffect(() => {
+    if (!isStatusOpen && selectedStatus) {
+      updateTrigger();
+    }
+  }, [isStatusOpen, selectedStatus, updateTrigger]);
 
   const handleClose = () => {
     dispatch(resetWorkflow());
@@ -89,7 +143,7 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
         <TextInput
           placeholder="Add a description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={handleDescriptionChange}
         />
 
         <LineDivider className="my-4" />
@@ -98,13 +152,13 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
         </div>
         <div className="mb-4">
           <Dropdown
+            id="events-id"
             options={eventOptions}
             value={selectedEvents}
-            onChange={(val) =>
-              setSelectedEvents(Array.isArray(val) ? val : [val])
-            }
+            onChange={handleEventsChange}
             multiple={true}
             placeholder="Select event"
+            onOpenChange={setIsEventsOpen}
           />
         </div>
         <div className="mb-2 text-xs font-medium text-textGray500">
@@ -112,12 +166,12 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
         </div>
         <div>
           <Dropdown
+            id="status-id"
             options={statusOptions}
             value={selectedStatus}
-            onChange={(val) =>
-              setSelectedStatus(Array.isArray(val) ? val[0] ?? "" : val)
-            }
+            onChange={handleStatusChange}
             placeholder="Select contact status"
+            onOpenChange={setIsStatusOpen}
           />
         </div>
       </div>

@@ -48,7 +48,7 @@ export interface Action {
 
 export interface TriggerFilters {
   events: string[];
-  contact_statuses: string[];
+  contact_statuses: string;
 }
 
 export interface Trigger {

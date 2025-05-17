@@ -1,11 +1,5 @@
-import React, { useState } from "react";
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-  Switch,
-} from "@headlessui/react";
+import React, { useState, useEffect } from "react";
+import { Switch } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import TextInput from "./TextInput";
 import { ButtonComponent } from "./Button";
@@ -24,76 +18,37 @@ export interface DropdownOption {
 
 interface DropdownProps {
   options: DropdownOption[];
+  id?: string;
   value: string | string[];
   onChange: (value: string | string[]) => void;
   multiple?: boolean;
   placeholder?: string;
   className?: string;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
 export const Dropdown: React.FC<DropdownProps> = ({
   options,
+  id = "dropdown",
   value,
   onChange,
   multiple = false,
   placeholder = "Select...",
   className = "",
+  onOpenChange,
 }) => {
   const [search, setSearch] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
   const filteredOptions = options.filter((opt) =>
     opt.label.toLowerCase().includes(search.toLowerCase())
   );
 
+  useEffect(() => {
+    onOpenChange?.(isOpen);
+  }, [isOpen, onOpenChange]);
+
   // Single select using Listbox
-  if (!multiple) {
-    return (
-      <Listbox value={value} onChange={onChange}>
-        <div className={`relative ${className}`}>
-          <ListboxButton className="w-full flex items-center justify-between px-3 py-2 border border-borderGray300 rounded bg-white text-sm focus:outline-none">
-            <span className="truncate text-left">
-              {options.find((o) => o.value === value)?.label || placeholder}
-            </span>
-            <ChevronDownIcon className="w-4 h-4 text-textGray400 ml-2" />
-          </ListboxButton>
-          <ListboxOptions className="absolute z-10 mt-1 w-full bg-white border border-borderGray200 rounded shadow-lg max-h-48 overflow-y-auto">
-            <div className="p-2">
-              <TextInput
-                placeholder="Search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="mb-2"
-              />
-            </div>
-            {filteredOptions.length === 0 && (
-              <div className="px-4 py-2 text-textGray400 text-sm">
-                {General_Texts.No_Options}
-              </div>
-            )}
-            {filteredOptions.map((option) => (
-              <ListboxOption
-                key={option.value}
-                value={option.value}
-                className={({ active, selected }) =>
-                  `flex items-center px-4 py-2 cursor-pointer text-sm ${
-                    active ? "bg-borderGray100" : ""
-                  } ${selected ? "bg-backgroundBlue600" : ""}`
-                }
-              >
-                {({ selected }) => (
-                  <>
-                    <span className="flex-1">{option.label}</span>
-                    {selected && (
-                      <CheckIcon className="w-4 h-4 text-backgroundBlue600 ml-2" />
-                    )}
-                  </>
-                )}
-              </ListboxOption>
-            ))}
-          </ListboxOptions>
-        </div>
-      </Listbox>
-    );
-  }
 
   // Multi-select: custom logic with Listbox and checkboxes
   const arrValue = Array.isArray(value) ? value : [];
@@ -112,22 +67,25 @@ export const Dropdown: React.FC<DropdownProps> = ({
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          const menu = document.getElementById("dropdown-multi-menu");
+          setIsOpen(!isOpen);
+          const menu = document.getElementById(`${id}-menu`);
           if (menu) menu.classList.toggle("hidden");
         }}
       >
         <span className="truncate text-left">
-          {arrValue.length > 0
-            ? options
-                .filter((o) => arrValue.includes(o.value))
-                .map((o) => o.label)
-                .join(", ")
-            : placeholder}
+          {multiple
+            ? arrValue.length > 0
+              ? options
+                  .filter((o) => arrValue.includes(o.value))
+                  .map((o) => o.label)
+                  .join(", ")
+              : placeholder
+            : options.find((o) => o.value === value)?.label || placeholder}
         </span>
         <ChevronDownIcon className="w-4 h-4 text-textGray400 ml-2" />
       </ButtonComponent>
       <div
-        id="dropdown-multi-menu"
+        id={`${id}-menu`}
         className="absolute z-10 mt-1 w-full bg-white border border-borderGray200 rounded shadow-lg max-h-60 overflow-y-auto hidden"
       >
         <div className="p-2">
@@ -148,21 +106,49 @@ export const Dropdown: React.FC<DropdownProps> = ({
             <li
               key={option.value}
               className={`flex items-center px-4 py-2 cursor-pointer hover:bg-borderGray100 text-sm`}
-              onClick={() => handleMultiSelect(option)}
+              onClick={() => {
+                if (multiple) {
+                  handleMultiSelect(option);
+                } else {
+                  onChange(option.value);
+                  const menu = document.getElementById(`${id}-menu`);
+                  if (menu) menu.classList.add("hidden");
+                }
+              }}
             >
               <Switch
-                checked={arrValue.includes(option.value)}
-                onChange={() => handleMultiSelect(option)}
+                checked={
+                  multiple
+                    ? arrValue.includes(option.value)
+                    : value === option.value
+                }
+                onChange={() => {
+                  if (multiple) {
+                    handleMultiSelect(option);
+                  } else {
+                    onChange(option.value);
+                    const menu = document.getElementById(`${id}-menu`);
+                    if (menu) menu.classList.add("hidden");
+                  }
+                }}
                 className={`border border-borderGray300 ${
-                  arrValue.includes(option.value)
+                  multiple
+                    ? arrValue.includes(option.value)
+                      ? "bg-backgroundBlue600"
+                      : "bg-borderGray50"
+                    : value === option.value
                     ? "bg-backgroundBlue600"
                     : "bg-borderGray50"
                 } relative inline-flex h-4 w-4 items-center justify-center rounded-md transition-colors focus:outline-none`}
               >
                 <span className="sr-only">Select {option.label}</span>
-                {arrValue.includes(option.value) && (
+                {multiple ? (
+                  arrValue.includes(option.value) ? (
+                    <CheckIcon className="h-3 w-3 text-white" />
+                  ) : null
+                ) : value === option.value ? (
                   <CheckIcon className="h-3 w-3 text-white" />
-                )}
+                ) : null}
               </Switch>
               <span className="flex-1 ml-2">{option.label}</span>
             </li>

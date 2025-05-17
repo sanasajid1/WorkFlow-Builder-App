@@ -9,10 +9,21 @@ import {
 } from "../services/constants/StringConstants";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 
+import { useDispatch, useSelector } from "react-redux";
+import { setWorkflowName } from "../redux/features/workFlow/workFlowSlice";
+import type { RootState } from "../redux/store";
+
 export const Header: React.FC = () => {
-  const [workflowName, setWorkflowName] = useState(WorkFlow_Name);
+  const dispatch = useDispatch();
+  const workflowName =
+    useSelector((state: RootState) => state.workflow.workflow.name) ||
+    WorkFlow_Name;
   const [isEditing, setIsEditing] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setWorkflowName(e.target.value));
+  };
 
   return (
     <div className="flex w-full justify-between items-center px-4 py-2 border-b border-borderGray200 bg-white">
@@ -31,7 +42,7 @@ export const Header: React.FC = () => {
         {isEditing ? (
           <input
             value={workflowName}
-            onChange={(e) => setWorkflowName(e.target.value)}
+            onChange={handleNameChange}
             onBlur={() => setIsEditing(false)}
             autoFocus
             className="focus:outline-none text-[16px] leading-[150%] text-base font-medium text-center"

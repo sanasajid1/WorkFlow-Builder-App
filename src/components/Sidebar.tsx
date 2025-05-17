@@ -23,6 +23,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSideBar }) => {
   return (
     <>
       <div
+        // style={{ maxHeight: "calc(100vh - 112px)" }}
         className={`fixed top-[112px] right-0 h-[calc(100vh-112px)] p-4 overflow-y-auto transition-transform w-96 border-l borderborderGray200 shadow-lg bg-white ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}

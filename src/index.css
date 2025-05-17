@@ -10,6 +10,14 @@
   @apply bg-gradient-to-r from-backGroundLeft to-backGroundRight opacity-50;
 }
 
+.table-row-text-class {
+  @apply text-[13px] leading-[16px] font-normal text-textGray900;
+}
+
+.avatar-gradient {
+  background: linear-gradient(#1044ce, #001d6b);
+}
+
 body {
   margin: 0;
   padding: 0;

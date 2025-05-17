@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { ButtonComponent } from "./common/Button";
-import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowPathIcon,
+  CalendarIcon,
+  ChevronLeftIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline";
 import TextInput from "./common/TextInput";
 import { Dropdown } from "./common/Dropdown";
 import { addAction } from "../redux/features/workFlow/workFlowSlice";
 import { useDispatch } from "react-redux";
+import {
+  Button_Texts,
+  waitActionTimeUnits,
+} from "../services/constants/StringConstants";
 
 interface WaitActionConfigViewProps {
   onClose: () => void;
 }
-
-const timeUnits = [
-  { value: "Minutes", label: "Minutes" },
-  { value: "Hours", label: "Hours" },
-  { value: "Days", label: "Days" },
-];
 
 const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
   onClose,
@@ -46,16 +49,7 @@ const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between pb-2">
         <div className="flex items-center gap-2">
-          <svg
-            className="w-5 h-5 text-gray-500"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 6v6l4 2" />
-          </svg>
+          <ClockIcon className="w-5 h-5" />
           <h2 className="text-lg font-semibold">Wait</h2>
         </div>
         <div className="flex items-center gap-2">
@@ -75,58 +69,27 @@ const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
       {/* Main or Period UI */}
       {step === "main" ? (
         <div className="flex flex-col gap-3">
-          <button
+          <ButtonComponent
             className="flex items-center w-full px-3 py-3 border border-gray-200 rounded-md text-left text-sm gap-2 hover:bg-gray-50"
             onClick={() => setStep("period")}
           >
-            <svg
-              className="w-5 h-5 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 6v6l4 2" />
-            </svg>
-            A set period of time
-          </button>
-          <button className="flex items-center w-full px-3 py-3 border border-gray-200 rounded-md text-left text-sm gap-2 hover:bg-gray-50">
-            <svg
-              className="w-5 h-5 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <rect x="3" y="4" width="18" height="18" rx="2" />
-              <path d="M16 2v4M8 2v4M3 10h18" />
-            </svg>
+            <ClockIcon className="w-5 h-5" />A set period of time
+          </ButtonComponent>
+          <ButtonComponent className="flex items-center w-full px-3 py-3 border border-gray-200 rounded-md text-left text-sm gap-2 hover:bg-gray-50">
+            <CalendarIcon className="w-5 h-5" />
             Until a specific day and/or time
-          </button>
+          </ButtonComponent>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
           {/* Back */}
-          <button
+          <ButtonComponent
             className="flex items-center text-sm mb-2 gap-1"
             onClick={() => setStep("main")}
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Back
-          </button>
+            <ChevronLeftIcon className="w-4 h-4" />
+            {Button_Texts.Back}
+          </ButtonComponent>
           <div className="font-medium mb-2">A set period of time</div>
           <div className="mb-2 text-sm text-gray-700">Wait for</div>
           <div className="flex items-center gap-2 mb-4">
@@ -134,12 +97,12 @@ const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
               type="number"
               value={waitValue.toString()}
               onChange={(e) => setWaitValue(e.target.value)}
-              className="px-2 py-1 border border-borderGray300 rounded text-sm focus:outline-none focus:ring-none w-[20%]"
+              className="px-2 py-1 border border-borderGray300 rounded text-sm focus:outline-none focus:ring-none w-16"
             />
             <Dropdown
               value={waitUnit}
               onChange={(value) => setWaitUnit(value as string)}
-              options={timeUnits}
+              options={waitActionTimeUnits}
               isCheckBox={false}
               className="w-32"
             />
@@ -151,7 +114,7 @@ const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
           onClick={onClose}
           className="flex items-center gap-4 px-2 py-[6px] text-[14px] font-medium rounded-g8 border border-borderGray300  bg-white text-textGray500"
         >
-          Cancel
+          {Button_Texts.Cancel}
         </ButtonComponent>
         <ButtonComponent
           onClick={handleSave}
@@ -162,7 +125,7 @@ const WaitActionConfigView: React.FC<WaitActionConfigViewProps> = ({
               : "bg-backgroundBlue600"
           }`}
         >
-          Save
+          {Button_Texts.Save}
         </ButtonComponent>
       </div>
     </div>

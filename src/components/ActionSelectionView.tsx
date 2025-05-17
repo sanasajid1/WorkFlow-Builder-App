@@ -3,63 +3,10 @@ import { ButtonComponent } from "./common/Button";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import PencilSquareIcon from "./customIcons/PencilSquareIcon";
 import { SearchBar } from "./common/SearchBar";
-
-const tabs = ["All", "Contact", "Call", "Appointment setting", "Utilities"];
-const tabContent = [
-  // All tab
-  {
-    heading: "APPOINTMENT SETTING",
-    items: [
-      { label: "Assign contact to user", view: "assignContact" },
-      { label: "Remove assigned user", view: "removeAssignedUser" },
-    ],
-    utilitiesHeading: "UTILITIES",
-    utilities: [
-      { label: "If/Else condition", view: "ifElse" },
-      { label: "Wait", view: "wait" },
-      { label: "Go to", view: "goTo" },
-      { label: "Webhook", view: "webhook" },
-      { label: "Math operation", view: "mathOperation" },
-    ],
-  },
-  // Contact tab
-  {
-    heading: "CONTACT",
-    items: [],
-    utilitiesHeading: null,
-    utilities: [],
-  },
-  // Call tab
-  {
-    heading: "CALL",
-    items: [],
-    utilitiesHeading: null,
-    utilities: [],
-  },
-  // Appointment setting tab
-  {
-    heading: "APPOINTMENT SETTING",
-    items: [
-      { label: "Assign contact to user", view: "assignContact" },
-      { label: "Remove assigned user", view: "removeAssignedUser" },
-    ],
-    utilitiesHeading: null,
-    utilities: [],
-  },
-  // Utilities tab
-  {
-    heading: "UTILITIES",
-    items: [
-      { label: "If/Else condition", view: "ifElse" },
-      { label: "Wait", view: "wait" },
-      { label: "Go to", view: "goTo" },
-      { label: "Webhook", view: "webhook" },
-      { label: "Math operation", view: "mathOperation" },
-    ],
-    utilitiesHeading: null,
-    utilities: [],
-  },
-];
+import {
+  actionTabContent,
+  actionTabs,
+} from "../services/constants/StringConstants";
 
 interface ActionSelectionViewProps {
   toggleSideBar: () => void;
@@ -95,7 +42,7 @@ export const ActionSelectionView: React.FC<ActionSelectionViewProps> = ({
         </div>
         <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
           <TabList className="flex space-x-6 border-b border-borderGray200 mt-4 mb-2 overflow-x-auto whitespace-nowrap hide-scrollbar">
-            {tabs.map((tab) => (
+            {actionTabs.map((tab) => (
               <Tab
                 key={tab}
                 className={({ selected }) =>
@@ -119,7 +66,7 @@ export const ActionSelectionView: React.FC<ActionSelectionViewProps> = ({
             ))}
           </TabList>
           <TabPanels>
-            {tabContent.map((content, idx) => (
+            {actionTabContent.map((content, idx) => (
               <TabPanel key={idx} className="mt-4">
                 {content.heading && content.items.length > 0 && (
                   <div className="flex gap-x-1 text-xs text-textGray500 mb-2 uppercase">

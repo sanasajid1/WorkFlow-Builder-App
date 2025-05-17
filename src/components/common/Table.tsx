@@ -1,5 +1,7 @@
 import React from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import { Dropdown } from "./Dropdown";
+import { ButtonComponent } from "./Button";
+import { Button_Texts } from "../../services/constants/StringConstants";
 
 interface TableColumn<T> {
   header: string;
@@ -30,14 +32,14 @@ const Table = <T extends Record<string, any>>({
   const currentData = data.slice(startIndex, endIndex);
 
   return (
-    <div className="bg-white rounded-lg shadow">
+    <div className="bg-white rounded-[8px] border-borderGray300 border overflow-hidden">
       <table className="min-w-full">
         <thead>
           <tr className="border-b">
             {columns.map((column, index) => (
               <th
                 key={index}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 bg-borderGray50 text-left text-xs font-medium text-textGray900 tracking-wider"
               >
                 {column.header}
               </th>
@@ -59,56 +61,57 @@ const Table = <T extends Record<string, any>>({
         </tbody>
       </table>
 
-      <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-        <div className="flex items-center">
-          <span className="text-sm text-gray-700">Rows per page: </span>
-          <select
-            value={itemsPerPage}
-            onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-            className="ml-2 border-gray-300 rounded-md text-sm"
-          >
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-          </select>
+      <div className="bg-white px-6 py-4 flex items-center justify-between border-t border-borderGray200">
+        <div className="flex items-center text-[12px] text-textGray500">
+          Showing {(currentPage - 1) * itemsPerPage + 1}-
+          {Math.min(currentPage * itemsPerPage, data.length)} of {data.length}
         </div>
 
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-700">
-            Showing {startIndex + 1} to {Math.min(endIndex, data.length)} of{" "}
-            {data.length}
-          </span>
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-              disabled={currentPage === 1}
-              className="relative inline-flex items-center px-2 py-2 rounded-md bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-            >
-              <ChevronLeftIcon className="h-5 w-5" />
-            </button>
+        <div className="flex items-center gap-2">
+          <span className="text-[12px] text-textGray500">Rows per page:</span>
+          <Dropdown
+            value={itemsPerPage.toString()}
+            onChange={(value) => onItemsPerPageChange(Number(value))}
+            options={[
+              { label: "5", value: "5" },
+              { label: "10", value: "10" },
+              { label: "15", value: "15" },
+            ]}
+            isCheckBox={false}
+            className="w-4"
+          />
+
+          <ButtonComponent
+            onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+            className="text-[12px] text-textGray500 px-4 py-[7px] disabled:opacity-50 hover:bg-borderGray50 rounded"
+          >
+            {Button_Texts.Previous}
+          </ButtonComponent>
+
+          <div className="flex border-textGray500 items-center gap-[8px]">
             {[...Array(totalPages)].map((_, i) => (
-              <button
+              <ButtonComponent
                 key={i + 1}
                 onClick={() => onPageChange(i + 1)}
-                className={`px-3 py-1 rounded-md text-sm font-medium ${
+                className={`text-[12px] w-[24px] h-[24px] flex items-center justify-center rounded ${
                   currentPage === i + 1
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-700 hover:bg-gray-50"
+                    ? "bg-borderGray50 text-textGray500"
+                    : "text-textGray500 hover:bg-borderGray50"
                 }`}
               >
                 {i + 1}
-              </button>
+              </ButtonComponent>
             ))}
-            <button
-              onClick={() =>
-                onPageChange(Math.min(totalPages, currentPage + 1))
-              }
-              disabled={currentPage === totalPages}
-              className="relative inline-flex items-center px-2 py-2 rounded-md bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-            >
-              <ChevronRightIcon className="h-5 w-5" />
-            </button>
           </div>
+
+          <ButtonComponent
+            onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+            className="text-[12px] text-textGray500 px-4 py-[7px] disabled:opacity-50 hover:bg-borderGray50 rounded"
+          >
+            {Button_Texts.Next}
+          </ButtonComponent>
         </div>
       </div>
     </div>

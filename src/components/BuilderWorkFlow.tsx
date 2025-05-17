@@ -154,7 +154,7 @@ export const BuilderWorkFlowComponent: React.FC<BuilderProps> = ({
   }, []);
 
   return (
-    <div className="h-screen">
+    <div className="h-[calc(100vh-112px)]">
       <ReactFlow
         nodes={nodes}
         nodeTypes={nodeTypes}

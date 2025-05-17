@@ -1,4 +1,4 @@
-import React, { useState, useEffect, type ReactNode } from "react";
+import React, { useState, useEffect, type ReactNode, useRef } from "react";
 import { Switch } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import TextInput from "./TextInput";
@@ -18,7 +18,6 @@ export interface DropdownOption {
 
 interface DropdownProps {
   options: DropdownOption[];
-  id?: string;
   value: string | string[];
   onChange: (value: string | string[]) => void;
   multiple?: boolean;
@@ -31,7 +30,6 @@ interface DropdownProps {
 
 export const Dropdown: React.FC<DropdownProps> = ({
   options,
-  id = "dropdown",
   value,
   onChange,
   multiple = false,
@@ -43,6 +41,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
 }) => {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = options.filter((opt) => {
     // If label is a string, filter by it; if not, show all
@@ -56,7 +56,21 @@ export const Dropdown: React.FC<DropdownProps> = ({
     onOpenChange?.(isOpen);
   }, [isOpen, onOpenChange]);
 
-  // Single select using Listbox
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Multi-select: custom logic with Listbox and checkboxes
   const arrValue = Array.isArray(value) ? value : [];
@@ -69,15 +83,13 @@ export const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div ref={dropdownRef} className={`relative ${className}`}>
       <ButtonComponent
-        className="w-full flex items-center justify-between px-3 py-2 border border-borderGray300 rounded bg-white text-sm focus:outline-none"
+        className={`w-full flex items-center justify-between px-3 py-2 border border-borderGray300 rounded bg-white text-sm focus:outline-none ${className}`}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
           setIsOpen(!isOpen);
-          const menu = document.getElementById(`${id}-menu`);
-          if (menu) menu.classList.toggle("hidden");
         }}
       >
         <span className="truncate text-left">
@@ -96,8 +108,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
         <ChevronDownIcon className="w-4 h-4 text-textGray400 ml-2" />
       </ButtonComponent>
       <div
-        id={`${id}-menu`}
-        className={`${className} absolute z-10 mt-1 w-full bg-white border border-borderGray200 rounded shadow-lg max-h-60 overflow-y-auto hidden`}
+        ref={menuRef}
+        className={`absolute z-10 mt-1 w-full bg-white border border-borderGray200 rounded shadow-lg max-h-60 overflow-y-auto ${
+          isOpen ? "" : "hidden"
+        }`}
       >
         {isSearch && (
           <div className="p-2">
@@ -124,8 +138,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   handleMultiSelect(option);
                 } else {
                   onChange(option.value);
-                  const menu = document.getElementById(`${id}-menu`);
-                  if (menu) menu.classList.add("hidden");
+                  setIsOpen(false);
                 }
               }}
             >
@@ -141,8 +154,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                       handleMultiSelect(option);
                     } else {
                       onChange(option.value);
-                      const menu = document.getElementById(`${id}-menu`);
-                      if (menu) menu.classList.add("hidden");
+                      setIsOpen(false);
                     }
                   }}
                   className={`border border-borderGray300 ${

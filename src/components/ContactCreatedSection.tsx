@@ -6,6 +6,8 @@ import {
 } from "../redux/features/workFlow/workFlowSlice";
 import {
   Button_Texts,
+  contactCreatedEventOptions,
+  contactCreatedStatusOptions,
   General_Texts,
 } from "../services/constants/StringConstants";
 import { ButtonComponent } from "./common/Button";
@@ -44,21 +46,6 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
   // Track if dropdowns are open
   const [isEventsOpen, setIsEventsOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
-
-  const eventOptions = [
-    { label: "Onboarding call", value: "Onboarding call" },
-    { label: "Demo call", value: "Demo call" },
-    { label: "Strategy meeting", value: "Strategy meeting" },
-    { label: "Discovery call", value: "Discovery call" },
-  ];
-
-  const statusOptions = [
-    { label: "Potential", value: "Potential" },
-    { label: "Qualified", value: "Qualified" },
-    { label: "Disqualified", value: "Disqualified" },
-    { label: "Strategy Call Booked", value: "Strategy Call Booked" },
-    { label: "Discovery Call Booked", value: "Discovery Call Booked" },
-  ];
 
   // Update trigger in Redux
   const updateTrigger = useCallback(() => {
@@ -160,8 +147,7 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
         </div>
         <div className="mb-4">
           <Dropdown
-            id="events-id"
-            options={eventOptions}
+            options={contactCreatedEventOptions}
             value={selectedEvents}
             onChange={handleEventsChange}
             multiple={true}
@@ -174,8 +160,7 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
         </div>
         <div>
           <Dropdown
-            id="status-id"
-            options={statusOptions}
+            options={contactCreatedStatusOptions}
             value={selectedStatus}
             onChange={handleStatusChange}
             placeholder="Select contact status"

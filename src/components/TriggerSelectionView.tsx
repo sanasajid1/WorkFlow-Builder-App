@@ -14,6 +14,8 @@ import { COLORS } from "../services/constants/ColorConstants";
 import {
   General_Texts,
   SideBar_Tabs,
+  triggerTabContent,
+  triggerTabs,
 } from "../services/constants/StringConstants";
 
 interface TriggerSelectionViewProps {
@@ -21,46 +23,6 @@ interface TriggerSelectionViewProps {
   onShowActionView: () => void;
   toggleSideBar: () => void;
 }
-
-const tabs = [
-  SideBar_Tabs.All,
-  SideBar_Tabs.Contact,
-  SideBar_Tabs.Call,
-  SideBar_Tabs.Outcome,
-  SideBar_Tabs.Appointment,
-];
-const tabContent = [
-  // All tab
-  {
-    heading: SideBar_Tabs.Contact,
-    items: ["Contact created"],
-    Icon: <UserIcon stroke={COLORS.TEXT_GRAY_500} className="w-4 h-4" />,
-  },
-  // Contact tab
-  {
-    heading: SideBar_Tabs.Contact,
-    items: ["Contact created"],
-    Icon: <UserIcon stroke={COLORS.TEXT_GRAY_500} className="w-4 h-4" />,
-  },
-  // Call tab
-  {
-    heading: SideBar_Tabs.Call,
-    items: [],
-    Icon: <PhoneIcon stroke={COLORS.TEXT_GRAY_500} className="w-4 h-4" />,
-  },
-  // Outcome tab
-  {
-    heading: SideBar_Tabs.Outcome,
-    items: [],
-    Icon: <CheckIcon stroke={COLORS.TEXT_GRAY_500} className="w-4 h-4" />,
-  },
-  // Appointment tab
-  {
-    heading: SideBar_Tabs.Appointment,
-    items: [],
-    Icon: <CalendarIcon stroke={COLORS.TEXT_GRAY_500} className="w-4 h-4" />,
-  },
-];
 
 const getTabIcon = (tab: string, selected: boolean) => {
   const iconProps = {
@@ -114,7 +76,7 @@ const TriggerSelectionView: React.FC<TriggerSelectionViewProps> = ({
       <SearchBar placeholder="Search trigger" onChange={handleSearch} />
       <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
         <TabList className="flex space-x-6 border-b border-borderGray200 mt-4 mb-2 overflow-x-auto whitespace-nowrap hide-scrollbar">
-          {tabs.map((tab) => (
+          {triggerTabs.map((tab) => (
             <Tab
               key={tab}
               className={({ selected }) =>
@@ -135,11 +97,14 @@ const TriggerSelectionView: React.FC<TriggerSelectionViewProps> = ({
           ))}
         </TabList>
         <TabPanels>
-          {tabContent.map((content, idx) => (
+          {triggerTabContent.map((content, idx) => (
             <TabPanel key={idx} className="mt-4">
               {content.heading && content.items.length > 0 && (
                 <div className="flex gap-x-1 text-xs text-textGray500 mb-2 uppercase">
-                  {content.Icon}
+                  {React.createElement(
+                    content.icon.component,
+                    content.icon.props
+                  )}
                   {content.heading}
                 </div>
               )}

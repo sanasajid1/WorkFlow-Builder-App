@@ -7,23 +7,14 @@ import TextInput from "./common/TextInput";
 import { useDispatch } from "react-redux";
 import { addAction } from "../redux/features/workFlow/workFlowSlice";
 import workflowData from "../data/workflow.json";
+import {
+  assignContactConditionOptions,
+  assignContactUserOptions,
+} from "../services/constants/StringConstants";
 
 interface AssignContactToUserConfigViewProps {
   onClose: () => void;
 }
-
-const conditionOptions = [
-  { value: "onlyifnotassigned", label: "Only if not assigned" },
-  {
-    value: "overwriteexistingassignedusers",
-    label: "Overwrite existing assigned users",
-  },
-];
-
-const userOptions = [
-  { value: "allusers", label: "All users" },
-  { value: "specificusers", label: "Specific users" },
-];
 
 const AssignContactToUserConfigView: React.FC<
   AssignContactToUserConfigViewProps
@@ -142,8 +133,7 @@ const AssignContactToUserConfigView: React.FC<
         <div>
           <div className="text-sm font-medium mb-1">Assign condition</div>
           <Dropdown
-            id="assign-id"
-            options={conditionOptions}
+            options={assignContactConditionOptions}
             value={assignCondition}
             onChange={(value) => setAssignCondition(value as string)}
             placeholder="Select condition"
@@ -153,8 +143,7 @@ const AssignContactToUserConfigView: React.FC<
         <div>
           <div className="text-sm font-medium mb-1">Assign to</div>
           <Dropdown
-            id="assignTo-id"
-            options={userOptions}
+            options={assignContactUserOptions}
             value={assignTo}
             onChange={(value) => setAssignTo(value as string)}
             placeholder="Select"
@@ -165,7 +154,6 @@ const AssignContactToUserConfigView: React.FC<
           <div>
             <div className="text-sm font-medium mb-1">Select user(s)</div>
             <Dropdown
-              id="user-multi"
               options={workflowData.workflow.users.map((user) => ({
                 value: user.id,
                 label: (
@@ -196,7 +184,6 @@ const AssignContactToUserConfigView: React.FC<
                   Assign percentage
                 </div>
                 <Dropdown
-                  id="percentage-id"
                   options={[
                     { value: "equally", label: "Assign equally" },
                     { value: "manually", label: "Assign manually" },
@@ -264,7 +251,7 @@ const AssignContactToUserConfigView: React.FC<
           disabled={isSaveDisabled}
           className={`flex items-center gap-4 px-2 py-[6px] text-[14px] font-medium rounded-g8 text-white ${
             isSaveDisabled
-              ? "bg-gradient-to-r from-backGroundLeft to-backGroundRight cursor-not-allowed"
+              ? "bg-gradient-to-r from-backGroundLeft via-backGroundMiddle to-backGroundRight cursor-not-allowed"
               : "bg-backgroundBlue600"
           }`}
         >

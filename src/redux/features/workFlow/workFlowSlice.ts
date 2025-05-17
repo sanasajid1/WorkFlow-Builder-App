@@ -36,7 +36,10 @@ const workflowSlice = createSlice({
       state.workflow.status = action.payload;
     },
     setTrigger: (state, action: PayloadAction<Trigger>) => {
+      console.log("here");
+
       state.workflow.trigger = action.payload;
+      console.log(state.workflow.trigger, "   ", action.payload);
     },
     updateTriggerFilters: (state, action: PayloadAction<TriggerFilters>) => {
       state.workflow.trigger.filters = action.payload;

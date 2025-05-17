@@ -1,5 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setTrigger } from "../redux/features/workFlow/workFlowSlice";
+import {
+  setTrigger,
+  resetWorkflow,
+} from "../redux/features/workFlow/workFlowSlice";
 import {
   Button_Texts,
   General_Texts,
@@ -8,10 +11,11 @@ import { ButtonComponent } from "./common/Button";
 import { Dropdown } from "./common/Dropdown";
 import LineDivider from "./common/LineDivider";
 import TextInput from "./common/TextInput";
-import PencilSquareIcon from "./customIcons/PencilSquareIcon";
 
 import React, { useState } from "react";
 import type { RootState } from "../redux/store";
+import { COLORS } from "../services/constants/ColorConstants";
+import { UserIcon } from "@heroicons/react/24/outline";
 
 type ContactCreatedSectionProps = {
   setSelectedTrigger?: (trigger: string | null) => void;
@@ -57,16 +61,23 @@ export const ContactCreatedSection: React.FC<ContactCreatedSectionProps> = ({
     }
   };
 
+  const handleClose = () => {
+    dispatch(resetWorkflow());
+    if (setSelectedTrigger) {
+      setSelectedTrigger(null);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full justify-between">
       <div>
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2 text-base font-semibold">
-            <PencilSquareIcon stroke="#64748b" fontSize={20} />
+            <UserIcon stroke={COLORS.TEXT_GRAY_500} className="w-5 h-5" />
             {General_Texts.Contact_Created}
           </div>
           <ButtonComponent
-            onClick={() => setSelectedTrigger && setSelectedTrigger(null)}
+            onClick={handleClose}
             className="text-textGray400 hover:text-backgroundBlue600 text-xl px-2"
           >
             ×

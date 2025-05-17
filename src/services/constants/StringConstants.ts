@@ -23,3 +23,11 @@ export const General_Texts = {
   Close_Menu: "Close menu",
   Define_The_Trigger: "Define the trigger that kicks off this workflow.",
 };
+
+export const SideBar_Tabs = {
+  All: "All",
+  Contact: "Contact",
+  Call: "Call",
+  Outcome: "Outcome",
+  Appointment: "Appointment",
+};

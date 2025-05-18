@@ -126,3 +126,7 @@ workflow-builder-app/
    - The Save button on Header Tab is enabled when user creates a trigger and atleast 1 action
    - The initial state of workflow status is Draft and user can change it to Live on clicking the toggle mode
    - The data in Execution Logs is being shown from users[] in workflow.json
+  
+## Deployment Instructions
+   - Deployment is done through Vercel
+   - Deployment link: work-flow-builder-app.vercel.app

@@ -104,21 +104,21 @@ export const NavBar: React.FC = () => {
                   {selectedZoom}
                   <ChevronDownIcon className="w-4 h-4" />
                 </MenuButton>
-                <MenuItems className="absolute right-0 mt-1 w-24 bg-white border border-borderGray200 rounded-g8 shadow-lg focus:outline-none">
+                <MenuItems className="absolute z-20 right-0 mt-1 w-24 bg-white border border-borderGray200 rounded-g8 shadow-lg focus:outline-none">
                   <div className="py-1">
                     {zoomLevels.map((zoom) => (
                       <MenuItem key={zoom}>
                         {({ active }) => (
-                          <button
+                          <div
                             onClick={() => setSelectedZoom(zoom)}
                             className={`${active ? "bg-borderGray100" : ""} ${
                               selectedZoom === zoom
                                 ? "text-backgroundBlue600"
                                 : "text-textGray500"
-                            } group flex w-full items-center px-4 py-2 text-sm`}
+                            } group flex w-full items-center px-4 py-2 text-sm cursor-pointer`}
                           >
                             {zoom}
-                          </button>
+                          </div>
                         )}
                       </MenuItem>
                     ))}

@@ -1,7 +1,12 @@
 import { useState } from "react";
 import ContactCreatedSection from "./ContactCreatedSection";
 import { useDispatch } from "react-redux";
-import { setTrigger } from "../redux/features/workFlow/workFlowSlice";
+import {
+  setIsActionNode,
+  setIsAssignContactClicked,
+  setIsWaitClicked,
+  setTrigger,
+} from "../redux/features/workFlow/workFlowSlice";
 import ActionSelectionView from "./ActionSelectionView";
 import TriggerSelectionView from "./TriggerSelectionView";
 import WaitActionConfigView from "./WaitActionConfigView";
@@ -22,6 +27,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSideBar }) => {
     null
   );
 
+  const onActionSelect = (value: any) => {
+    dispatch(setIsActionNode(true));
+    setSelectedActionView(value);
+    if (value === "wait") {
+      dispatch(setIsWaitClicked(true));
+    }
+    if (value === "assignContact") {
+      dispatch(setIsAssignContactClicked(true));
+    }
+  };
+
+  const onCloseWait = () => {
+    dispatch(setIsActionNode(false));
+    setSelectedActionView(null);
+    dispatch(setIsWaitClicked(false));
+  };
+
+  const onCloseAssignContact = () => {
+    dispatch(setIsActionNode(false));
+    setSelectedActionView(null);
+    dispatch(setIsAssignContactClicked(false));
+  };
+
   return (
     <>
       <div
@@ -34,7 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSideBar }) => {
           showActionSelection ? (
             <ActionSelectionView
               toggleSideBar={toggleSideBar}
-              onActionSelect={setSelectedActionView}
+              onActionSelect={onActionSelect}
             />
           ) : selectedTrigger === "Contact created" ? (
             <ContactCreatedSection
@@ -60,11 +88,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSideBar }) => {
             />
           )
         ) : selectedActionView === "wait" ? (
-          <WaitActionConfigView onClose={() => setSelectedActionView(null)} />
+          <WaitActionConfigView onClose={onCloseWait} />
         ) : selectedActionView === "assignContact" ? (
-          <AssignContactToUserConfigView
-            onClose={() => setSelectedActionView(null)}
-          />
+          <AssignContactToUserConfigView onClose={onCloseAssignContact} />
         ) : (
           <div className="p-8 text-center">
             Config view for: {selectedActionView} <br />{" "}

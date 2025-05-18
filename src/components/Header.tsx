@@ -10,11 +10,26 @@ import {
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setWorkflowName } from "../redux/features/workFlow/workFlowSlice";
+import {
+  setWorkflowName,
+  setWorkflowStatus,
+} from "../redux/features/workFlow/workFlowSlice";
 import type { RootState } from "../redux/store";
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
+  const isTriggerCreated = useSelector(
+    (state: RootState) => state.workflow.isTriggerCreated
+  );
+  const actions = useSelector(
+    (state: RootState) => state.workflow.workflow.actions
+  );
+
+  const workflow = useSelector((state: RootState) => state.workflow);
+
+  // Check if workflow is valid (has trigger and at least one action)
+  const isWorkflowValid = isTriggerCreated && actions.length > 0;
+
   const workflowName =
     useSelector((state: RootState) => state.workflow.workflow.name) ||
     WorkFlow_Name;
@@ -23,6 +38,15 @@ export const Header: React.FC = () => {
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setWorkflowName(e.target.value));
+  };
+
+  const handleSave = () => {
+    console.log("Full Redux state:", workflow.workflow);
+  };
+
+  const handleToggle = (checked: boolean) => {
+    setIsDraft(!isDraft);
+    dispatch(setWorkflowStatus(checked ? "Live" : "Draft"));
   };
 
   return (
@@ -62,13 +86,19 @@ export const Header: React.FC = () => {
 
       {/* Right Section */}
       <div className="flex items-center gap-4">
-        <ButtonComponent className="flex gap-4 items-center text-[13px] font-medium text-textGray900 rounded-md border-[1px] border-borderGray200 bg-borderGray100 px-[6px] py-[2px]">
-          {Button_Texts.Draft}
+        <ButtonComponent
+          className={`flex gap-4 items-center text-[13px] font-medium ${
+            !isDraft
+              ? "text-textGray900 border-borderGray200 bg-borderGray100"
+              : "text-textGreen600 border-borderGreen300 bg-backgroundGreen100"
+          }  rounded-md border-[1px] px-[6px] py-[2px]`}
+        >
+          {!isDraft ? Button_Texts.Draft : Button_Texts.Live}
         </ButtonComponent>
         <div className="flex items-center gap-2">
           <Switch
             checked={isDraft}
-            onChange={setIsDraft}
+            onChange={handleToggle}
             className={`${
               isDraft ? "bg-backgroundBlue600" : "bg-borderGray200"
             } relative inline-flex h-[20px] w-[40px] items-center rounded-full transition`}
@@ -80,7 +110,13 @@ export const Header: React.FC = () => {
             />
           </Switch>
         </div>
-        <ButtonComponent className="flex bg-gradient-to-r from-backGroundLeft to-backGroundRight text-white gap-4 items-center text-[14px] font-medium rounded-g8 px-2 py-[6px]">
+        <ButtonComponent
+          className={`flex items-center gap-4 px-2 py-[6px] text-[14px] font-medium rounded-g8 text-white ${
+            isWorkflowValid ? "active-button-class" : "disabled-button-class"
+          }`}
+          disabled={!isWorkflowValid}
+          onClick={handleSave}
+        >
           {Button_Texts.Save}
         </ButtonComponent>
       </div>

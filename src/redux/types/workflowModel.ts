@@ -69,4 +69,7 @@ export interface WorkflowState {
   loading: boolean;
   error: string | null;
   isTriggerCreated: boolean;
+  isWaitClicked: boolean;
+  isActionNode: boolean;
+  isAssignContactClicked: boolean;
 }

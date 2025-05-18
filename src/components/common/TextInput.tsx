@@ -52,7 +52,7 @@ export const TextInput: React.FC<TextInputProps> = ({
         onChange={handleChange}
         placeholder={placeholder}
         name={name}
-        className={`w-full px-3 py-2 border border-borderGray200 rounded bg-borderGray50 text-sm focus:outline-none ${className}`}
+        className={` px-3 py-2 border border-borderGray200 rounded bg-borderGray50 text-sm focus:outline-none ${className}`}
       />
     );
   }

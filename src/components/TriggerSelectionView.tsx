@@ -56,7 +56,14 @@ const TriggerSelectionView: React.FC<TriggerSelectionViewProps> = ({
     setSearchValue(value);
   };
 
-  console.log(searchValue);
+  // Filter triggerTabContent based on searchValue
+  const filteredTabContent = triggerTabContent.map((content) => {
+    if (!searchValue.trim()) return content;
+    const filteredItems = content.items.filter((item: string) =>
+      item.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    return { ...content, items: filteredItems };
+  });
 
   return (
     <>
@@ -97,7 +104,7 @@ const TriggerSelectionView: React.FC<TriggerSelectionViewProps> = ({
           ))}
         </TabList>
         <TabPanels>
-          {triggerTabContent.map((content, idx) => (
+          {filteredTabContent.map((content, idx) => (
             <TabPanel key={idx} className="mt-4">
               {content.heading && content.items.length > 0 && (
                 <div className="flex gap-x-1 text-xs text-textGray500 mb-2 uppercase">

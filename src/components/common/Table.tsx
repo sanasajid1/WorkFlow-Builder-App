@@ -41,7 +41,7 @@ const Table = <T extends Record<string, any>>({
             {columns.map((column, index) => (
               <th
                 key={index}
-                className="px-6 py-3 bg-borderGray50 text-left text-xs font-medium text-textGray900"
+                className="px-6 py-3 bg-borderGray50 rounded-[8px] text-left text-xs font-medium text-textGray900"
               >
                 {column.header}
               </th>

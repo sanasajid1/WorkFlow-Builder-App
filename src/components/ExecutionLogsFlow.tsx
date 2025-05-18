@@ -8,7 +8,6 @@ import workflowData from "../data/workflow.json";
 import Table from "./common/Table";
 import { Dropdown } from "./common/Dropdown";
 import type { DropdownOption } from "./common/Dropdown";
-import type { User } from "../types/workflow";
 import { ButtonComponent } from "./common/Button";
 import { COLORS } from "../services/constants/ColorConstants";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
@@ -16,6 +15,14 @@ import StatusTile from "./common/StatusTile";
 import HistoryIcon from "./customIcons/HistoryIcon";
 import { DateRangePicker } from "./common/DateRangePicker";
 import { parse, isWithinInterval } from "date-fns";
+
+export interface User {
+  id: number;
+  name: string;
+  action: string;
+  status: string;
+  executedOn: string;
+}
 
 const ExecutionLogsComponent: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);

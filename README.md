@@ -116,6 +116,13 @@ workflow-builder-app/
    - Modular component architecture
 
 3. **Data Flow**
+
    - Unidirectional data flow using Redux
    - Real-time updates for workflow configurations
    - Optimistic updates for better user experience
+
+4. **Assumptions**
+   - The User can create 1 trigger and as many actions
+   - The Save button on Header Tab is enabled when user creates a trigger and atleast 1 action
+   - The initial state of workflow status is Draft and user can change it to Live on clicking the toggle mode
+   - The data in Execution Logs is being shown from users[] in workflow.json

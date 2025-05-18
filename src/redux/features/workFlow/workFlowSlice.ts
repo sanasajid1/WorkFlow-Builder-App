@@ -9,8 +9,8 @@ import type {
 
 const initialState: WorkflowState = {
   workflow: {
-    name: "",
-    status: "",
+    name: "WorkFlow Name",
+    status: "Draft",
     trigger: {
       type: "",
       description: "",
@@ -23,6 +23,9 @@ const initialState: WorkflowState = {
   },
   loading: false,
   isTriggerCreated: false,
+  isWaitClicked: false,
+  isAssignContactClicked: false,
+  isActionNode: false,
   error: null,
 };
 
@@ -44,6 +47,15 @@ const workflowSlice = createSlice({
     },
     updateTriggerFilters: (state, action: PayloadAction<TriggerFilters>) => {
       state.workflow.trigger.filters = action.payload;
+    },
+    setIsActionNode: (state, action: PayloadAction<boolean>) => {
+      state.isActionNode = action.payload;
+    },
+    setIsWaitClicked: (state, action: PayloadAction<boolean>) => {
+      state.isWaitClicked = action.payload;
+    },
+    setIsAssignContactClicked: (state, action: PayloadAction<boolean>) => {
+      state.isAssignContactClicked = action.payload;
     },
     addAction: (state, action: PayloadAction<Action>) => {
       state.workflow.actions.push(action.payload);
@@ -78,6 +90,9 @@ export const {
   setIsTriggerCreated,
   updateTriggerFilters,
   addAction,
+  setIsActionNode,
+  setIsWaitClicked,
+  setIsAssignContactClicked,
   updateAction,
   removeAction,
   setLoading,

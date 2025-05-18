@@ -1,10 +1,14 @@
 import type { DropdownOption } from "../../components/common/Dropdown";
+import ListDetailsIcon from "../../components/customIcons/ListDetailsIcon";
 import { COLORS } from "./ColorConstants";
 import {
   UserIcon,
   PhoneIcon,
   CheckIcon,
   CalendarIcon,
+  ClockIcon,
+  ArrowPathIcon,
+  CogIcon,
 } from "@heroicons/react/24/outline";
 
 export const WorkFlow_Name = "WorkFlow Name";
@@ -12,6 +16,7 @@ export const WorkFlow_Name = "WorkFlow Name";
 export const Button_Texts = {
   Save: "Save",
   Draft: "Draft",
+  Live: "Live",
   Back: "Back",
   Cancel: "Cancel",
   Trigger: "Trigger",
@@ -81,18 +86,22 @@ export const waitActionTimeUnits = [
 ];
 
 export const actionTabs = [
-  "All",
-  "Contact",
-  "Call",
-  "Appointment setting",
-  "Utilities",
+  { name: "All", icon: ListDetailsIcon },
+  { name: "Contact", icon: UserIcon },
+  { name: "Call", icon: PhoneIcon },
+  { name: "Appointment setting", icon: CalendarIcon },
+  { name: "Utilities", icon: ClockIcon },
 ];
+
 export const actionTabContent = [
   // All tab
   {
     heading: "APPOINTMENT SETTING",
     items: [
-      { label: "Assign contact to user", view: "assignContact" },
+      {
+        label: "Assign contact to user",
+        view: "assignContact",
+      },
       { label: "Remove assigned user" },
     ],
     utilitiesHeading: "UTILITIES",
@@ -103,6 +112,20 @@ export const actionTabContent = [
       { label: "Webhook" },
       { label: "Math operation" },
     ],
+    icon: {
+      component: UserIcon,
+      props: {
+        stroke: COLORS.TEXT_GRAY_500,
+        className: "w-4 h-4",
+      },
+    },
+    utilitiesIcon: {
+      component: ClockIcon,
+      props: {
+        stroke: COLORS.TEXT_GRAY_500,
+        className: "w-4 h-4",
+      },
+    },
   },
   // Contact tab
   {
@@ -110,6 +133,13 @@ export const actionTabContent = [
     items: [],
     utilitiesHeading: null,
     utilities: [],
+    icon: {
+      component: UserIcon,
+      props: {
+        stroke: COLORS.TEXT_GRAY_500,
+        className: "w-4 h-4",
+      },
+    },
   },
   // Call tab
   {
@@ -117,29 +147,58 @@ export const actionTabContent = [
     items: [],
     utilitiesHeading: null,
     utilities: [],
+    icon: {
+      component: PhoneIcon,
+      props: {
+        stroke: COLORS.TEXT_GRAY_500,
+        className: "w-4 h-4",
+      },
+    },
   },
   // Appointment setting tab
   {
     heading: "APPOINTMENT SETTING",
     items: [
-      { label: "Assign contact to user", view: "assignContact" },
-      { label: "Remove assigned user", view: "removeAssignedUser" },
+      {
+        label: "Assign contact to user",
+        view: "assignContact",
+        icon: UserIcon,
+      },
+      {
+        label: "Remove assigned user",
+        view: "removeAssignedUser",
+        icon: UserIcon,
+      },
     ],
     utilitiesHeading: null,
     utilities: [],
+    icon: {
+      component: CalendarIcon,
+      props: {
+        stroke: COLORS.TEXT_GRAY_500,
+        className: "w-4 h-4",
+      },
+    },
   },
   // Utilities tab
   {
     heading: "UTILITIES",
     items: [
-      { label: "If/Else condition", view: "ifElse" },
-      { label: "Wait", view: "wait" },
-      { label: "Go to", view: "goTo" },
-      { label: "Webhook", view: "webhook" },
-      { label: "Math operation", view: "mathOperation" },
+      { label: "If/Else condition", view: "ifElse", icon: ArrowPathIcon },
+      { label: "Wait", view: "wait", icon: ClockIcon },
+      { label: "Go to", view: "goTo", icon: ArrowPathIcon },
+      { label: "Webhook", view: "webhook", icon: CogIcon },
+      { label: "Math operation", view: "mathOperation", icon: CogIcon },
     ],
     utilitiesHeading: null,
     utilities: [],
+    icon: {
+      component: CogIcon,
+      props: {
+        stroke: COLORS.TEXT_GRAY_500,
+        className: "w-4 h-4",
+      },
+    },
   },
 ];
 
